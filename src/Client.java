@@ -13,7 +13,7 @@ public class Client {
             DataOutputStream output = new DataOutputStream(client.getOutputStream());
             DataInputStream input = new DataInputStream(client.getInputStream());
 
-            output.writeUTF("Hi server");
+            output.writeUTF("echo Hi server");
             output.flush();
 
             String response = input.readUTF();
