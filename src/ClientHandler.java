@@ -2,6 +2,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 public class ClientHandler implements Runnable{
 
@@ -14,34 +16,36 @@ public class ClientHandler implements Runnable{
 
     @Override
     public void run() {
+        try {
+            client.setSoTimeout(10000);
+            try (
+                    Socket socket = this.client;
+                    DataInputStream input = new DataInputStream(socket.getInputStream());
+                    DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+            ) {
+                while (true) {
 
-        try(
-            Socket socket = this.client;
-            DataInputStream input = new DataInputStream(socket.getInputStream());
-            DataOutputStream output = new DataOutputStream(socket.getOutputStream());
-        ) {
+                    String request = input.readUTF();
 
-            while (true) {
+                    if (request.equals("quit")) {
+                        break;
+                    }
 
-                String request = input.readUTF();
+                    if (request.startsWith("echo ")) {
+                        String message = request.substring(5);
 
-                if(request.equals("quit")) {
-                    break;
-                }
+                        output.writeUTF(message);
+                        output.flush();
 
-                if(request.startsWith("echo ")) {
-                    String message = request.substring(5);
+                        continue;
+                    }
 
-                    output.writeUTF(message);
+                    output.writeUTF("ERROR: unknown command");
                     output.flush();
-
-                    continue;
                 }
-
-                output.writeUTF("ERROR: unknown command");
-                output.flush();
             }
-
+        } catch (SocketTimeoutException ex) {
+            System.out.println("Client timed out.");
         } catch (IOException ex) {
             ex.printStackTrace();
         }

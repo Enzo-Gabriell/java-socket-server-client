@@ -2,6 +2,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.Scanner;
 
 public class Client {
@@ -24,7 +25,13 @@ public class Client {
                     break;
                 }
 
-                String response = input.readUTF();
+                String response;
+                try {
+                    response = input.readUTF();
+                } catch (SocketTimeoutException ex) {
+                    System.err.println("Client timed out.");
+                    break;
+                }
 
                 System.out.println("Response: " + response);
             }
