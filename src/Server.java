@@ -22,7 +22,10 @@ public class Server {
             }
 
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.err.println("Server error: " + ex.getMessage());
+
+        } finally {
+            executor.shutdown();
         }
     }
 }

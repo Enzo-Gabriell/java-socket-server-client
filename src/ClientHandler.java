@@ -33,6 +33,12 @@ public class ClientHandler implements Runnable{
                         break;
                     }
 
+                    if (request.equals("echo") || request.equals("echo ")) {
+                        output.writeUTF("ERROR: echo requires a message");
+                        output.flush();
+                        continue;
+                    }
+
                     if (request.startsWith("echo ")) {
                         String message = request.substring(5);
 
