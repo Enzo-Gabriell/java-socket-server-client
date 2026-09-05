@@ -7,11 +7,14 @@ import java.util.concurrent.Executors;
 
 public class Server {
 
+    private static final int PORT = 5000;
+    private static final int THREAD_POOL_SIZE = 4;
+
     public static void main(String[] args) {
         ExecutorService executor =
-                Executors.newFixedThreadPool(4);
+                Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
-        try (ServerSocket server = new ServerSocket(5000)) {
+        try (ServerSocket server = new ServerSocket(PORT)) {
 
             System.out.println("Server initialized successfully.");
 

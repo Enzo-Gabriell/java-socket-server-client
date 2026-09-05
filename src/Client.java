@@ -9,11 +9,14 @@ import java.util.Scanner;
 
 public class Client {
 
+    private static final String SERVER_HOST = "localhost";
+    private static final int SERVER_PORT = 5000;
+
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
         try(
-            Socket client = new Socket("localhost", 5000);
+            Socket client = new Socket(SERVER_HOST, SERVER_PORT);
         ) {
             DataOutputStream output = new DataOutputStream(client.getOutputStream());
             DataInputStream input = new DataInputStream(client.getInputStream());

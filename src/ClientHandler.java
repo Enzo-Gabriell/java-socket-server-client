@@ -7,17 +7,18 @@ import java.net.SocketTimeoutException;
 
 public class ClientHandler implements Runnable{
 
+    private static final int CLIENT_TIMEOUT = 10000;
+
     private final Socket client;
 
     public ClientHandler(Socket client) {
         this.client = client;
     }
 
-
     @Override
     public void run() {
         try {
-            client.setSoTimeout(10000);
+            client.setSoTimeout(CLIENT_TIMEOUT);
 
             try (
                     Socket socket = this.client;
