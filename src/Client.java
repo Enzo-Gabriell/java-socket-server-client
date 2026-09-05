@@ -1,6 +1,8 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.Scanner;
@@ -28,15 +30,17 @@ public class Client {
                 String response;
                 try {
                     response = input.readUTF();
-                } catch (SocketTimeoutException ex) {
-                    System.err.println("Client timed out.");
+                } catch (EOFException ex) {
+                    System.err.println("Server disconnected.");
                     break;
                 }
 
                 System.out.println("Response: " + response);
             }
+        } catch (ConnectException ex) {
+            System.err.println("Could not connect to server.");
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.err.println("Communication error: " + ex.getMessage());
         }
     }
 }

@@ -1,3 +1,4 @@
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,7 +10,8 @@ public class Server {
     public static void main(String[] args) {
         ExecutorService executor =
                 Executors.newFixedThreadPool(4);
-        try(ServerSocket server = new ServerSocket(5000)) {
+
+        try (ServerSocket server = new ServerSocket(5000)) {
 
             System.out.println("Server initialized successfully.");
 
